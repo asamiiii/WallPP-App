@@ -36,7 +36,7 @@ Widget customSliderList(              //Slider Fun
     List<String>?catListText}) {
   return SizedBox(
       width: double.infinity,
-      height: imgHight,
+      height: listHight,
       child: ListView.separated(
         separatorBuilder: ((context, index) => const SizedBox(
               width: 10,
@@ -46,7 +46,6 @@ Widget customSliderList(              //Slider Fun
             child: ClipRRect(
                 borderRadius: BorderRadius.circular(15),
                 child: Stack(
-
                   children:[CachedNetworkImage(
                     imageUrl: list![index],
                     placeholder: (context, url) =>
@@ -64,6 +63,59 @@ Widget customSliderList(              //Slider Fun
         scrollDirection: Axis.horizontal,
       ));
 }
+
+Widget setWallSliderList(              //Slider Fun 
+    { List<String>? list,
+     double? imgWidth,
+     double? imgHight,
+     double? listHight,
+    List<String>?catListText}) {
+  return SizedBox(
+      width: double.infinity,
+      height: listHight,
+      child: ListView.separated(
+        separatorBuilder: ((context, index) => const SizedBox(
+              width: 10,
+            )),
+        itemBuilder: ((context, index) => InkWell(
+            onTap: (() {}),
+            child: ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: Stack(
+                  children:[CachedNetworkImage(
+                    imageUrl: list![index],
+                    placeholder: (context, url) =>
+                        const CircularProgressIndicator(),
+                    errorWidget: (context, url, error) => const Icon(Icons.error),
+                    width: imgWidth,
+                    height: imgHight,
+                    fit: BoxFit.fill,
+                  ),
+                  Container(
+                    width: imgWidth,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            IconButton(onPressed: (){}, icon: Icon(Icons.event_note_rounded),iconSize: 50),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 35,vertical: 40),
+                              child: IconButton(onPressed: (){}, icon: Icon(Icons.share),iconSize: 30),
+                            ),
+                            IconButton(onPressed: (){}, icon: Icon(Icons.download_for_offline_outlined),iconSize: 50,),
+                          ],
+                        ),
+                      ],
+                    ),
+                  )]
+                )))),
+        itemCount: list!.length,
+        scrollDirection: Axis.horizontal,
+      ));
+}
+
 
 
 
