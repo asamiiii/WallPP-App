@@ -1,0 +1,4 @@
+#Wed Oct 19 21:39:56 EET 2022
+base.0=/home/ahmed/StudioProjects/Basics/wallpaperapp/build/app/intermediates/dex/debug/mergeDexDebug/classes.dex
+renamed.0=classes.dex
+path.0=classes.dex
