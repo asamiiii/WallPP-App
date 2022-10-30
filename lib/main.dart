@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
+import 'package:wallpaperapp/Screens/home_screen.dart';
 import 'views/home.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await getCuratedPhotos();
+  
   runApp(const MyApp());
 }
 
@@ -15,18 +19,18 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        appBarTheme: 
-        
-        const AppBarTheme(
-          color: Colors.white,
-          iconTheme: IconThemeData(color: Colors.black38),),
+          bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+            backgroundColor: Colors.white,
+            elevation: 0,
+          ),
+          appBarTheme: const AppBarTheme(
+            color: Colors.white,
+            iconTheme: IconThemeData(color: Colors.black38),
+          ),
           iconTheme: const IconThemeData(color: Colors.white)
-        //primarySwatch: Colors.lime,
-      ),
+          //primarySwatch: Colors.lime,
+          ),
       home: Home(),
     );
   }
 }
-
-
-

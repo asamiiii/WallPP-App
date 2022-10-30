@@ -7,15 +7,15 @@ List<String> popUrl = [
 ];
 
 List<String> catUrl = [
-  'https://images.pexels.com/photos/5461065/pexels-photo-5461065.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
-  'https://images.pexels.com/photos/799443/pexels-photo-799443.jpeg?auto=compress&cs=tinysrgb&w=600',
-  'https://images.pexels.com/photos/799443/pexels-photo-799443.jpeg?auto=compress&cs=tinysrgb&w=600',
-  'https://images.pexels.com/photos/1226302/pexels-photo-1226302.jpeg?auto=compress&cs=tinysrgb&w=600',
+  'https://images.pexels.com/photos/36704/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+  'https://images.pexels.com/photos/459653/pexels-photo-459653.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+  'https://images.pexels.com/photos/167964/pexels-photo-167964.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+  'https://images.pexels.com/photos/269583/pexels-photo-269583.jpeg',
 ];
 
 List<String> catListText = [
-  'Abstrast',
-  'Colorful',
-  'Technology',
-  'Sport'
+  'Islamic',
+  'Computer',
+  'Dark',
+  'Sunset'
  ];

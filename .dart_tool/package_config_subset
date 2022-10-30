@@ -46,6 +46,10 @@ cupertino_icons
 2.12
 file:///home/ahmed/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/cupertino_icons-1.0.5/
 file:///home/ahmed/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/cupertino_icons-1.0.5/lib/
+dio
+2.12
+file:///home/ahmed/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/dio-4.0.6/
+file:///home/ahmed/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/dio-4.0.6/lib/
 fake_async
 2.12
 file:///home/ahmed/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/fake_async-1.2.0/
@@ -94,6 +98,10 @@ meta
 2.12
 file:///home/ahmed/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/meta-1.7.0/
 file:///home/ahmed/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/meta-1.7.0/lib/
+nested
+2.12
+file:///home/ahmed/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/nested-1.0.0/
+file:///home/ahmed/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/nested-1.0.0/lib/
 octo_image
 2.12
 file:///home/ahmed/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/octo_image-1.0.2/
@@ -146,6 +154,10 @@ process
 2.14
 file:///home/ahmed/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/process-4.2.4/
 file:///home/ahmed/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/process-4.2.4/lib/
+provider
+2.12
+file:///home/ahmed/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/provider-6.0.4/
+file:///home/ahmed/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/provider-6.0.4/lib/
 rxdart
 2.12
 file:///home/ahmed/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/rxdart-0.27.5/

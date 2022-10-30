@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:wallpaperapp/Screens/home_screen.dart';
+import 'package:wallpaperapp/network/network.dart';
 import 'package:wallpaperapp/views/widgets.dart';
 
 class Home extends StatefulWidget {
@@ -8,61 +10,26 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int _selectedIndex = 0;
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
+
+  int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 80,
-        flexibleSpace: Container(
-          padding: const EdgeInsets.fromLTRB(25, 30, 0, 0),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            const Text(
-              'Get Premium ',
-              style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.greenAccent),
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            brandName(),
-          ]),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: IconButton(
-              icon: const Icon(Icons.search),
-              onPressed: () {},
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: IconButton(
-              icon: const Icon(Icons.settings),
-              onPressed: () {},
-            ),
-          )
-        ],
-        elevation: 0,
-      ),
-      body:screens[_selectedIndex],
+      appBar: appBar(),
+      body: screens[selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: listOfNav,
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
+        currentIndex: selectedIndex,
+        onTap: (int index) {
+          setState(() {
+            selectedIndex = index;
+            print(selectedIndex);
+          });
+        },
+
         //selectedItemColor: Colors.amber[800],
-        
       ),
     );
   }
