@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:wallpaperapp/Screens/home_screen.dart';
 import 'package:wallpaperapp/network/network.dart';
 import 'package:wallpaperapp/views/widgets.dart';
@@ -10,27 +11,20 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-
-
-  int selectedIndex = 0;
-
   @override
   Widget build(BuildContext context) {
+     final myProvider = Provider.of<Provider_St>(context);
     return Scaffold(
       appBar: appBar(),
-      body: screens[selectedIndex],
+      body: screens[myProvider.selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: listOfNav,
-        currentIndex: selectedIndex,
-        onTap: (int index) {
-          setState(() {
-            selectedIndex = index;
-            print(selectedIndex);
-          });
-        },
-
+        currentIndex: myProvider.selectedIndex,
+        onTap: (int index){
+          myProvider.bottomNavToggle(index);
+        }
         //selectedItemColor: Colors.amber[800],
-      ),
+      )
     );
   }
 }

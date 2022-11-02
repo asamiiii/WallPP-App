@@ -1,42 +1,50 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:wallpaperapp/Screens/home_screen.dart';
 import 'package:wallpaperapp/views/widgets.dart';
 
+import '../network/network.dart';
 import '../views/fixed_data.dart';
 import '../wallpaper-model/wallpaper_model.dart';
 
-class WallpapersViewScreen extends StatefulWidget {
-  const WallpapersViewScreen({Key? key}) : super(key: key);
-
-  @override
-  State<WallpapersViewScreen> createState() => _WallpapersViewScreenState();
-}
-
-class _WallpapersViewScreenState extends State<WallpapersViewScreen> {
-  @override
-  void initState() {
-    //catPic = [];
-    WidgetsFlutterBinding.ensureInitialized();
-    
-    if(catPic.isEmpty)
-    {
-      getCategoryPhotos('Islamic');
-    }
-  }
+class WallpapersViewScreen extends StatelessWidget {
+  final String title;
+  WallpapersViewScreen({Key? key, required this.title})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var media = MediaQuery.of(context);
+    final myProvider = Provider.of<Provider_St>(context);
+
+    if (myProvider.islamicCatPic.isEmpty&&title==catListText[0]) {
+        myProvider.getIslamicPhotos();
+    }
+    if (myProvider.computerCatPic.isEmpty&&title==catListText[1]) {
+      myProvider.getComputerPhotos();
+    }
+    if (myProvider.darkCatPic.isEmpty&&title==catListText[2]) {
+      myProvider.getDarkPhotos();
+    }
+    if (myProvider.sunsetCatPic.isEmpty&&title==catListText[3]) {
+      myProvider.getSunsetPhotos();
+    }
     return Scaffold(
-      appBar: appBar(),
+      appBar: categoryScreensAppBar(title),
       body: GridView.builder(
-        itemCount: catPic.length,
+        itemCount:title==catListText[0]?myProvider.islamicCatPic.length:
+                        title==catListText[1]?myProvider.computerCatPic.length:
+                        title==catListText[2]?myProvider.darkCatPic.length:
+                        myProvider.sunsetCatPic.length,
         itemBuilder: (context, index) {
           return SizedBox(
               child: photoWidget(
-                  photo: catPic,
+                  photo:title==catListText[0]?myProvider.islamicCatPic:
+                        title==catListText[1]?myProvider.computerCatPic:
+                        title==catListText[2]?myProvider.darkCatPic:
+                        myProvider.sunsetCatPic
+                         ,
                   index: index,
                   context: context,
                   newScreen: const HomeScreen()));
@@ -51,28 +59,4 @@ class _WallpapersViewScreenState extends State<WallpapersViewScreen> {
       ),
     );
   }
-}
-
-late List<WallpaperModel> catPic=[] ;
-getCategoryPhotos(String searchOrCat) async {
-  //catPic=[];
-  var url = Uri.parse(
-      'https://api.pexels.com/v1/search?query=$searchOrCat&per_page=10');
-  var response = await http.get(url, headers: {
-    "Authorization": '563492ad6f91700001000001acf6db0cbfbe46c8a45f6df76562cc52'
-  });
-
-  //print(response.body);
-
-  Map<String, dynamic> jsonData = jsonDecode(response.body);
-
-  //parsing data
-  jsonData["photos"].forEach((element) {
-    // print(element); // dev mode
-    // getting data
-    WallpaperModel wallpaperModel = new WallpaperModel();
-    wallpaperModel = WallpaperModel.fromMap(element);
-    catPic.add(wallpaperModel);
-    print(catPic[0].src!.portrait);
-  });
 }

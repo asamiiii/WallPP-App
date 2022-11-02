@@ -1,5 +1,6 @@
-class WallpaperModel {
+import 'package:flutter/material.dart';
 
+class WallpaperModel {
   String? photographer;
   String? photographerUrl;
   int? photographerId;
@@ -13,11 +14,10 @@ class WallpaperModel {
     this.photographerUrl,
     this.photographerId,
     this.photographer,
-
-});
+  });
 
   // passing json value from API
-  factory WallpaperModel.fromMap(Map<String, dynamic> jsonData){
+  factory WallpaperModel.fromMap(Map<String, dynamic> jsonData) {
     return WallpaperModel(
       src: SrcModel.fromMap(jsonData['src']),
       photographerUrl: jsonData["photographer_url"],
@@ -25,30 +25,30 @@ class WallpaperModel {
       photographer: jsonData["photographer"],
     );
   }
-
 }
 
 // wallpaper Source Map Model
 class SrcModel {
-
   String original;
-  String small;
+  String medium;
   String portrait;
+  String tiny;
 
   // create name parameter
-  SrcModel({
-    required this.original,
-    required this.small,
-    required this.portrait,
-});
+  SrcModel(
+      {required this.original,
+      required this.medium,
+      required this.portrait,
+      required this.tiny,
+      });
 
   // passing json value from API
-  factory SrcModel.fromMap(Map<String, dynamic> jsonData){
+  factory SrcModel.fromMap(Map<String, dynamic> jsonData) {
     return SrcModel(
       portrait: jsonData["portrait"],
       original: jsonData["original"],
-      small: jsonData["small"],
+      medium: jsonData["medium"],
+      tiny: jsonData["tiny"]
     );
   }
-
 }

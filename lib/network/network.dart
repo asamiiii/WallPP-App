@@ -3,17 +3,29 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
+import '../views/fixed_data.dart';
 import '../wallpaper-model/wallpaper_model.dart';
 
 class Provider_St extends ChangeNotifier {
   Map<String, dynamic> rondomPic = {};
   late List<WallpaperModel> pic = [];
+  List<WallpaperModel> islamicCatPic = [];
+  late List<WallpaperModel> computerCatPic = [];
+  late List<WallpaperModel> darkCatPic = [];
+  late List<WallpaperModel> sunsetCatPic = [];
+  int selectedIndex = 0;
+
+  bottomNavToggle(int index) {
+    selectedIndex = index;
+    notifyListeners();
+  }
+
 
   getCuratedPhotos(BuildContext context) async {
     var url = Uri.parse('https://api.pexels.com/v1/curated?per_page=10');
     var response = await http.get(url, headers: {
       "Authorization":
-          '563492ad6f91700001000001acf6db0cbfbe46c8a45f6df76562cc52'
+          '563492ad6f91700001000001acf6db0cbfbe46c8a45f6df76562cc52',
     });
 
     //print(response.body);
@@ -24,13 +36,100 @@ class Provider_St extends ChangeNotifier {
     jsonData["photos"].forEach((element) {
       // print(element); // dev mode
       // getting data
-      WallpaperModel wallpaperModel = new WallpaperModel();
+      WallpaperModel wallpaperModel = WallpaperModel();
+
       wallpaperModel = WallpaperModel.fromMap(element);
       pic.add(wallpaperModel);
-      print(pic[0].src!.portrait);
       notifyListeners();
+      
+    });
+  }
 
-      print(pic[0].src!.portrait);
+  getIslamicPhotos() async {
+    //catPic=[];
+    var url =
+        Uri.parse('https://api.pexels.com/v1/search?query=islamic&per_page=10');
+    var response = await http.get(url, headers: {
+      "Authorization":
+          '563492ad6f91700001000001acf6db0cbfbe46c8a45f6df76562cc52',
+    });
+
+    //print(response.body);
+
+    Map<String, dynamic> jsonData = jsonDecode(response.body);
+
+    jsonData["photos"].forEach((element) async{
+      WallpaperModel wallpaperModel = WallpaperModel();
+      wallpaperModel =WallpaperModel.fromMap(element);
+      islamicCatPic.add(wallpaperModel);
+      notifyListeners();
+      print(islamicCatPic.length);
+    });
+  }
+
+  getComputerPhotos() async {
+    //catPic=[];
+    var url = Uri.parse(
+        'https://api.pexels.com/v1/search?query=Computer&per_page=10');
+    var response = await http.get(url, headers: {
+      "Authorization":
+          '563492ad6f91700001000001acf6db0cbfbe46c8a45f6df76562cc52',
+    });
+
+    //print(response.body);
+
+    Map<String, dynamic> jsonData = jsonDecode(response.body);
+
+    jsonData["photos"].forEach((element) {
+      WallpaperModel wallpaperModel = WallpaperModel();
+      wallpaperModel = WallpaperModel.fromMap(element);
+      computerCatPic.add(wallpaperModel);
+      notifyListeners();
+      print(computerCatPic.length);
+    });
+  }
+
+  getDarkPhotos() async {
+    //catPic=[];
+    var url =
+        Uri.parse('https://api.pexels.com/v1/search?query=dark&per_page=10');
+    var response = await http.get(url, headers: {
+      "Authorization":
+          '563492ad6f91700001000001acf6db0cbfbe46c8a45f6df76562cc52',
+    });
+
+    //print(response.body);
+
+    Map<String, dynamic> jsonData = jsonDecode(response.body);
+
+    jsonData["photos"].forEach((element) {
+      WallpaperModel wallpaperModel = WallpaperModel();
+      wallpaperModel = WallpaperModel.fromMap(element);
+      darkCatPic.add(wallpaperModel);
+      notifyListeners();
+      print(darkCatPic.length);
+    });
+  }
+
+  getSunsetPhotos() async {
+    //catPic=[];
+    var url =
+        Uri.parse('https://api.pexels.com/v1/search?query=sunset&per_page=10');
+    var response = await http.get(url, headers: {
+      "Authorization":
+          '563492ad6f91700001000001acf6db0cbfbe46c8a45f6df76562cc52',
+    });
+
+    //print(response.body);
+
+    Map<String, dynamic> jsonData = jsonDecode(response.body);
+
+    jsonData["photos"].forEach((element) {
+      WallpaperModel wallpaperModel = WallpaperModel();
+      wallpaperModel = WallpaperModel.fromMap(element);
+      sunsetCatPic.add(wallpaperModel);
+      notifyListeners();
+      print(sunsetCatPic.length);
     });
   }
 

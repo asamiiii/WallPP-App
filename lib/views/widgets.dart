@@ -46,6 +46,19 @@ PreferredSizeWidget appBar() {
   );
 }
 
+PreferredSizeWidget categoryScreensAppBar(String catTitle) {
+  return AppBar(
+    elevation: 0,
+    title: Text(
+      catTitle,
+      style: TextStyle(
+        fontSize: 24,
+         fontWeight: FontWeight.w500,
+         color: Colors.black)
+         ),
+  );
+}
+
 Widget brandName() {
   return SizedBox(
     child: RichText(
@@ -76,66 +89,62 @@ Widget customSliderList(
     double? imgWidth,
     double? imgHight,
     double? listHight}) {
-  return SizedBox(
-      width: double.infinity,
-      height: listHight,
-      child: ListView.separated(
-        shrinkWrap: true,
-        separatorBuilder: ((context, index) => const SizedBox(
-              width: 10,
-            )),
-        itemBuilder: ((context, index) => InkWell(
-            onTap: (() {}),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Stack(children: [
-                CachedNetworkImage(
-                    imageUrl: wallPapers[index].src!.original,
-                    placeholder: (context, url) => const Center(
-                        widthFactor: 10,
-                        heightFactor: 10,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 1,
-                        )),
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
-                    width: imgWidth,
-                    height: imgHight,
-                    fit: BoxFit.fill),
-              ]),
-            ))),
-        itemCount: wallPapers.length,
-        scrollDirection: Axis.horizontal,
-      ));
+  return Expanded(
+    child: SizedBox(
+        width: double.infinity,
+        height: listHight,
+        child: ListView.separated(
+          shrinkWrap: true,
+          separatorBuilder: ((context, index) => const SizedBox(
+                width: 10,
+              )),
+          itemBuilder: ((context, index) => InkWell(
+              onTap: (() {}),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Stack(children: [
+                  CachedNetworkImage(
+                      imageUrl: wallPapers[index].src!.medium,
+                      placeholder: (context, url) => const Center(
+                          widthFactor: 10,
+                          heightFactor: 10,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 1,
+                          )),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
+                      width: imgWidth,
+                      height: imgHight,
+                      fit: BoxFit.cover),
+                ]),
+              ))),
+          itemCount: wallPapers.length,
+          scrollDirection: Axis.horizontal,
+        )),
+  );
 }
 
 Widget photoWidget(
-  {
-  required List<WallpaperModel> photo ,
-  required int index,
-  required BuildContext context,
-  required Widget newScreen}
-  ) {
+    {required List<WallpaperModel> photo,
+    required int index,
+    required BuildContext context,
+    required Widget newScreen}) {
   return InkWell(
-      onTap:  (() => navigateTo(context: context,newScreen: newScreen)),
+      onTap: (() => navigateTo(context: context, newScreen: newScreen)),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(4),
-        child: Stack(
-          fit:StackFit.expand,
-
-          children: [
+        child: Stack(fit: StackFit.expand, children: [
           CachedNetworkImage(
-            
-              imageUrl: photo[index].src!.original,
-              placeholder: (context, url) => const Center(
-                  widthFactor: 10,
-                  heightFactor: 10,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 1,
-                  )),
-              errorWidget: (context, url, error) => const Icon(Icons.error),
-              fit: BoxFit.fill,
-              ),
+            imageUrl: photo[index].src!.medium,
+            placeholder: (context, url) => const Center(
+                widthFactor: 10,
+                heightFactor: 10,
+                child: CircularProgressIndicator(
+                  strokeWidth: 1,
+                )),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
+            fit: BoxFit.fill,
+          ),
         ]),
       ));
 }
@@ -144,63 +153,57 @@ Widget categorySliderList(
     //Slider Fun
     {required List<String> categoryList,
     required List<String> categoryListLabel,
-    required Widget nextScreen,
     BuildContext? context,
     double? imgWidth,
     double? imgHight,
     double? listHight}) {
   return SizedBox(
-      width: double.infinity,
-      height: listHight,
-      child: ListView.separated(
-        shrinkWrap: true,
-        separatorBuilder: ((context, index) => const SizedBox(
-              width: 10,
-            )),
-        itemBuilder: ((context, index) => 
-        InkWell(
-            onTap: () => navigateTo(context:context,newScreen: const WallpapersViewScreen()),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Stack(
-                children: [
-                CachedNetworkImage(
-                    imageUrl: categoryList[index],
-                    placeholder: (context, url) => const Center(
-                        widthFactor: 10,
-                        heightFactor: 10,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 1,
-                        )),
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
-                    width: imgWidth,
-                    height: imgHight,
-                    fit: BoxFit.fill),
-                    Container(
-                      alignment: Alignment.topCenter,
-
-                      color: Colors.black54.withOpacity(0.3),
-                    width:imgWidth,
-                    height: 50,
-                    child: Center(
-                      child: Text(
-                   categoryListLabel[index],
-                   style: 
-                   const TextStyle(
-                    fontSize: 30,
-                     fontWeight: FontWeight.w500,
-                     color: Colors.white
-                     ),
+    width: double.infinity,
+    height: listHight,
+    child: ListView.separated(
+      shrinkWrap: true,
+      separatorBuilder: ((context, index) => const SizedBox(
+            width: 10,
+          )),
+      itemBuilder: ((context, index) => InkWell(
+          onTap: () => navigateTo(
+              context: context, newScreen: WallpapersViewScreen(title: categoryListLabel[index],)),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Stack(children: [
+              CachedNetworkImage(
+                  imageUrl: categoryList[index],
+                  placeholder: (context, url) => const Center(
+                      widthFactor: 10,
+                      heightFactor: 10,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 1,
+                      )),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                  width: imgWidth,
+                  height: imgHight,
+                  fit: BoxFit.fill),
+              Container(
+                alignment: Alignment.topCenter,
+                color: Colors.black54.withOpacity(0.3),
+                width: imgWidth,
+                height: 50,
+                child: Center(
+                  child: Text(
+                    categoryListLabel[index],
+                    style: const TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white),
+                  ),
+                ),
+              )
+            ]),
+          ))),
+      itemCount: categoryList.length,
+      scrollDirection: Axis.horizontal,
     ),
-                    ),
-  )
-                    
-              ]),
-            ))),
-        itemCount: categoryList.length,
-        scrollDirection: Axis.horizontal,
-      ),);
+  );
 }
 
 Widget setWallSliderList(
@@ -287,6 +290,7 @@ List<Widget> screens = [
   const FavScreen(),
 ];
 
-navigateTo({required Widget newScreen,required BuildContext context}) {
-  Navigator.of(context).push(MaterialPageRoute(builder: (context) => newScreen));
+navigateTo({required Widget newScreen, required BuildContext context}) {
+  Navigator.of(context)
+      .push(MaterialPageRoute(builder: (context) => newScreen));
 }
