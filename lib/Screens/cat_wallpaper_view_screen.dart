@@ -3,7 +3,6 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wallpaperapp/Screens/home_screen.dart';
-import 'package:wallpaperapp/Screens/shimer_loading_screen.dart';
 import 'package:wallpaperapp/views/widgets.dart';
 
 import '../network/network.dart';
@@ -15,12 +14,10 @@ class WallpapersViewScreen extends StatelessWidget {
   WallpapersViewScreen({Key? key, required this.title})
       : super(key: key);
 
-      
-
   @override
   Widget build(BuildContext context) {
     final myProvider = Provider.of<Provider_St>(context);
-    
+
     if (myProvider.islamicCatPic.isEmpty&&title==catListText[0]) {
         myProvider.getIslamicPhotos();
     }
@@ -50,7 +47,7 @@ class WallpapersViewScreen extends StatelessWidget {
                          ,
                   index: index,
                   context: context,
-                  ));
+                  newScreen: const HomeScreen()));
         },
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,

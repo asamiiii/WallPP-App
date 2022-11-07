@@ -9,19 +9,21 @@ import '../views/widgets.dart';
 class SetWallScreen extends StatelessWidget {
   const SetWallScreen({Key? key}) : super(key: key);
 
-  //final String url ;
-
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(8),
-      height: double.infinity,
-      width: double.infinity,
-      child: setWallSliderList(
-        url:'' ,
-        imgHight: double.infinity,
-        imgWidth: 400,
-      ),
-    );
+    return ChangeNotifierProvider(
+        create: (context) => Provider_St(),
+        child: Consumer<Provider_St>(
+          builder: (context, value, child) => Container(
+            padding: EdgeInsets.all(8),
+            height: double.infinity,
+            width: double.infinity,
+            child: setWallSliderList(
+                listHight: double.infinity,
+                imgHight: double.infinity,
+                imgWidth: 400,
+                list: value.pic),
+          ),
+        ));
   }
 }

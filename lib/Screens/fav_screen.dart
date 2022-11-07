@@ -9,15 +9,21 @@ class FavScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final myProvider = Provider.of<Provider_St>(context);
-    return Column(
-      children: [
-        Text('${myProvider.counter}'),
-        FloatingActionButton(
-          onPressed: () => myProvider.addCounter(),
-          child: const Text('Add'),
-        )
-      ],
-    );
+    return ChangeNotifierProvider<Provider_St>(
+        create: (context) => Provider_St(),
+        child: Consumer<Provider_St>(
+          
+          builder: (context, value, child) => Center(
+            child: Column(
+              children: [
+                Text('${value.counter}'),
+                FloatingActionButton(
+                  onPressed: () => value.addCounter(),
+                  child: const Text('Add'),
+                )
+              ],
+            ),
+          ),
+        ));
   }
 }

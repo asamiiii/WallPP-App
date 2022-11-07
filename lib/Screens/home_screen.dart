@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wallpaperapp/Screens/shimer_loading_screen.dart';
 import 'package:wallpaperapp/wallpaper-model/wallpaper_model.dart';
 import '../network/network.dart';
 import '../views/fixed_data.dart';
@@ -22,7 +21,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final myProvider = Provider.of<Provider_St>(context);
-    
     if (myProvider.pic.isEmpty) {
       myProvider.getCuratedPhotos(context);
     }
