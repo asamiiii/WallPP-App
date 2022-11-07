@@ -15,7 +15,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
      final myProvider = Provider.of<Provider_St>(context);
     return Scaffold(
-      appBar: appBar(),
+      appBar: appBar(context),
       body: screens[myProvider.selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: listOfNav,

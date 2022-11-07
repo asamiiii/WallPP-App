@@ -3,11 +3,15 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:wallpaperapp/Screens/cat_wallpaper_view_screen.dart';
 import 'package:wallpaperapp/Screens/fav_screen.dart';
 import 'package:wallpaperapp/Screens/home_screen.dart';
+import 'package:wallpaperapp/Screens/pic_full_screen.dart';
+import 'package:wallpaperapp/Screens/search_screen.dart';
 import 'package:wallpaperapp/Screens/set_wall_screen.dart';
+import 'package:wallpaperapp/Screens/settings_screen.dart';
 import 'package:wallpaperapp/views/fixed_data.dart';
 import 'package:wallpaperapp/wallpaper-model/wallpaper_model.dart';
+import 'package:shimmer/shimmer.dart';
 
-PreferredSizeWidget appBar() {
+PreferredSizeWidget appBar(BuildContext context) {
   return AppBar(
     toolbarHeight: 80,
     flexibleSpace: Container(
@@ -31,17 +35,21 @@ PreferredSizeWidget appBar() {
         padding: const EdgeInsets.all(8.0),
         child: IconButton(
           icon: const Icon(Icons.search),
-          onPressed: () {},
-        ),
-      ),
+          onPressed: () {
+            Navigator.of(context)
+      .push(MaterialPageRoute(builder: (context) => const SearchScreen()));
+                    }
+        )),
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: IconButton(
           icon: const Icon(Icons.settings),
-          onPressed: () {},
+          onPressed: () {
+Navigator.of(context)
+      .push(MaterialPageRoute(builder: (context) => const SettingsScreen()));
+          },
         ),
-      )
-    ],
+      ),],
     elevation: 0,
   );
 }
@@ -49,13 +57,9 @@ PreferredSizeWidget appBar() {
 PreferredSizeWidget categoryScreensAppBar(String catTitle) {
   return AppBar(
     elevation: 0,
-    title: Text(
-      catTitle,
-      style: TextStyle(
-        fontSize: 24,
-         fontWeight: FontWeight.w500,
-         color: Colors.black)
-         ),
+    title: Text(catTitle,
+        style: TextStyle(
+            fontSize: 24, fontWeight: FontWeight.w500, color: Colors.black)),
   );
 }
 
@@ -99,7 +103,10 @@ Widget customSliderList(
                 width: 10,
               )),
           itemBuilder: ((context, index) => InkWell(
-              onTap: (() {}),
+              onTap: (() => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => FullScreen(
+                        url: wallPapers[index].src!.original,
+                      )))),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: Stack(children: [
@@ -127,10 +134,12 @@ Widget customSliderList(
 Widget photoWidget(
     {required List<WallpaperModel> photo,
     required int index,
-    required BuildContext context,
-    required Widget newScreen}) {
+    required BuildContext context}) {
   return InkWell(
-      onTap: (() => navigateTo(context: context, newScreen: newScreen)),
+      onTap: (() => Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => FullScreen(
+                url: photo[index].src!.original,
+              )))),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(4),
         child: Stack(fit: StackFit.expand, children: [
@@ -143,7 +152,7 @@ Widget photoWidget(
                   strokeWidth: 1,
                 )),
             errorWidget: (context, url, error) => const Icon(Icons.error),
-            fit: BoxFit.fill,
+            fit: BoxFit.cover,
           ),
         ]),
       ));
@@ -167,7 +176,10 @@ Widget categorySliderList(
           )),
       itemBuilder: ((context, index) => InkWell(
           onTap: () => navigateTo(
-              context: context, newScreen: WallpapersViewScreen(title: categoryListLabel[index],)),
+              context: context,
+              newScreen: WallpapersViewScreen(
+                title: categoryListLabel[index],
+              )),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: Stack(children: [
@@ -208,71 +220,56 @@ Widget categorySliderList(
 
 Widget setWallSliderList(
     //Slider Fun
-    {List<WallpaperModel>? list,
-    double? imgWidth,
-    double? imgHight,
-    double? listHight,
-    List<String>? catListText}) {
-  return SizedBox(
-      width: double.infinity,
-      height: listHight,
-      child: ListView.separated(
-        separatorBuilder: ((context, index) => const SizedBox(
-              width: 10,
-            )),
-        itemBuilder: ((context, index) => InkWell(
-            onTap: (() {}),
-            child: ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                child: Stack(children: [
-                  CachedNetworkImage(
-                    imageUrl: list![index].src!.original,
-                    placeholder: (context, url) => const Center(
-                        widthFactor: 10,
-                        heightFactor: 10,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 1,
-                        )),
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
-                    width: imgWidth,
-                    height: imgHight,
-                    fit: BoxFit.fill,
-                  ),
-                  Container(
-                    width: imgWidth,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            IconButton(
-                                onPressed: () {},
-                                icon: Icon(Icons.event_note_rounded),
-                                iconSize: 50),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 35, vertical: 40),
-                              child: IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(Icons.share),
-                                  iconSize: 30),
-                            ),
-                            IconButton(
-                              onPressed: () {},
-                              icon: Icon(Icons.download_for_offline_outlined),
-                              iconSize: 50,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  )
-                ])))),
-        itemCount: list!.length,
-        scrollDirection: Axis.horizontal,
-      ));
+    {
+  String? url,
+  double? imgWidth,
+  double? imgHight,
+}) {
+  return ClipRRect(
+      //borderRadius: BorderRadius.circular(10),
+      child: Stack(children: [
+    CachedNetworkImage(
+      imageUrl: url!,
+      placeholder: (context, url) => const Center(
+          widthFactor: 10,
+          heightFactor: 10,
+          child: CircularProgressIndicator(
+            strokeWidth: 1,
+          )),
+      errorWidget: (context, url, error) => const Icon(Icons.error),
+      width: imgWidth,
+      height: imgHight,
+      fit: BoxFit.cover,
+    ),
+    Container(
+      width: imgWidth,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                  onPressed: () {},
+                  icon: Icon(Icons.event_note_rounded),
+                  iconSize: 50),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 35, vertical: 40),
+                child: IconButton(
+                    onPressed: () {}, icon: Icon(Icons.share), iconSize: 30),
+              ),
+              IconButton(
+                onPressed: () {},
+                icon: Icon(Icons.download_for_offline_outlined),
+                iconSize: 50,
+              ),
+            ],
+          ),
+        ],
+      ),
+    )
+  ]));
 }
 
 List<BottomNavigationBarItem> listOfNav = [
@@ -293,4 +290,26 @@ List<Widget> screens = [
 navigateTo({required Widget newScreen, required BuildContext context}) {
   Navigator.of(context)
       .push(MaterialPageRoute(builder: (context) => newScreen));
+}
+
+Widget shimmer() {
+  return Shimmer.fromColors(
+      child: Container(
+        width: 300,
+        height: 400,
+        child: ListView.builder(
+            itemBuilder: (context, index) {
+              return Row(
+                children: [
+                  Container(
+                    height: 100,
+                    width: 50,
+                  )
+                ],
+              );
+            },
+            itemCount: 3),
+      ),
+      baseColor: Colors.white12,
+      highlightColor: Colors.black54);
 }

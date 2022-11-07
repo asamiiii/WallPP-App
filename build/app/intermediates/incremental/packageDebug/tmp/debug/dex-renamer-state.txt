@@ -1,4 +1,4 @@
-#Wed Nov 02 17:07:03 EET 2022
+#Wed Nov 02 23:21:36 EET 2022
 base.0=/home/ahmed/StudioProjects/Wallpp_app/WallPP-App/build/app/intermediates/dex/debug/mergeDexDebug/classes.dex
 renamed.0=classes.dex
 path.0=classes.dex

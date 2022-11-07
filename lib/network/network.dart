@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
@@ -13,16 +14,23 @@ class Provider_St extends ChangeNotifier {
   late List<WallpaperModel> computerCatPic = [];
   late List<WallpaperModel> darkCatPic = [];
   late List<WallpaperModel> sunsetCatPic = [];
+  bool isLoading = true;
   int selectedIndex = 0;
+
+  bool convertLoadingState() {
+    print(isLoading);
+    notifyListeners();
+    return isLoading = !isLoading;
+    
+  }
 
   bottomNavToggle(int index) {
     selectedIndex = index;
     notifyListeners();
   }
 
-
   getCuratedPhotos(BuildContext context) async {
-    var url = Uri.parse('https://api.pexels.com/v1/curated?per_page=10');
+    var url = Uri.parse('https://api.pexels.com/v1/curated?per_page=20');
     var response = await http.get(url, headers: {
       "Authorization":
           '563492ad6f91700001000001acf6db0cbfbe46c8a45f6df76562cc52',
@@ -41,7 +49,6 @@ class Provider_St extends ChangeNotifier {
       wallpaperModel = WallpaperModel.fromMap(element);
       pic.add(wallpaperModel);
       notifyListeners();
-      
     });
   }
 
@@ -58,9 +65,9 @@ class Provider_St extends ChangeNotifier {
 
     Map<String, dynamic> jsonData = jsonDecode(response.body);
 
-    jsonData["photos"].forEach((element) async{
+    jsonData["photos"].forEach((element) async {
       WallpaperModel wallpaperModel = WallpaperModel();
-      wallpaperModel =WallpaperModel.fromMap(element);
+      wallpaperModel = WallpaperModel.fromMap(element);
       islamicCatPic.add(wallpaperModel);
       notifyListeners();
       print(islamicCatPic.length);
