@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_shimmer/flutter_shimmer.dart';
+import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:wallpaperapp/Screens/cat_wallpaper_view_screen.dart';
 import 'package:wallpaperapp/Screens/fav_screen.dart';
 import 'package:wallpaperapp/Screens/home_screen.dart';
 import 'package:wallpaperapp/Screens/set_wall_screen.dart';
 import 'package:wallpaperapp/views/fixed_data.dart';
 import 'package:wallpaperapp/wallpaper-model/wallpaper_model.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+import '../app_provider/provider.dart';
 
 PreferredSizeWidget appBar() {
   return AppBar(
@@ -49,13 +55,9 @@ PreferredSizeWidget appBar() {
 PreferredSizeWidget categoryScreensAppBar(String catTitle) {
   return AppBar(
     elevation: 0,
-    title: Text(
-      catTitle,
-      style: TextStyle(
-        fontSize: 24,
-         fontWeight: FontWeight.w500,
-         color: Colors.black)
-         ),
+    title: Text(catTitle,
+        style: TextStyle(
+            fontSize: 24, fontWeight: FontWeight.w500, color: Colors.black)),
   );
 }
 
@@ -82,13 +84,59 @@ Widget categoryHomeText(String mainCatTextInHome) {
 
 //List list1 = Provider_St().url;
 
+class ImageMainSlider extends StatelessWidget {
+  const ImageMainSlider({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final myProvider = Provider.of<Provider_St>(context);
+    //final myProvider = Provider.of<Provider_St>(context);
+    if (myProvider.pic.isEmpty) {
+      myProvider.getCuratedPhotos(context);
+    }
+    //print(myProvider.pic.length);
+    return Expanded(
+      child: SizedBox(
+          width: 100,
+          height: 150,
+          child: ListView.separated(
+            //shrinkWrap: true,
+            separatorBuilder: ((context, index) => const SizedBox(
+                  width: 10,
+                )),
+            itemBuilder: ((context, index) => InkWell(
+                onTap: (() {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => SetWallScreen(
+                        picUrl: myProvider.pic[index].src!.original),
+                  ));
+                }),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: CachedNetworkImage(
+                      imageUrl: myProvider.pic[index].src!.medium,
+                      placeholder: (context, url) => const ProfilePageShimmer(),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
+                      width: 100,
+                      height: double.infinity,
+                      fit: BoxFit.cover),
+                ))),
+            itemCount: myProvider.pic.length,
+            scrollDirection: Axis.horizontal,
+          )),
+    );
+  }
+}
+
 Widget customSliderList(
     //Slider Fun
     {required List<WallpaperModel> wallPapers,
-    BuildContext? context,
+    required BuildContext context,
     double? imgWidth,
     double? imgHight,
     double? listHight}) {
+  final myProvider = Provider.of<Provider_St>(context);
   return Expanded(
     child: SizedBox(
         width: double.infinity,
@@ -99,7 +147,12 @@ Widget customSliderList(
                 width: 10,
               )),
           itemBuilder: ((context, index) => InkWell(
-              onTap: (() {}),
+              onTap: (() {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) =>
+                      SetWallScreen(picUrl: wallPapers[index].src!.original),
+                ));
+              }),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: Stack(children: [
@@ -127,12 +180,16 @@ Widget customSliderList(
 Widget photoWidget(
     {required List<WallpaperModel> photo,
     required int index,
-    required BuildContext context,
-    required Widget newScreen}) {
+    required BuildContext context}) {
   return InkWell(
-      onTap: (() => navigateTo(context: context, newScreen: newScreen)),
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) =>
+              SetWallScreen(picUrl: photo[index].src!.original),
+        ));
+      },
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(4),
+        borderRadius: BorderRadius.circular(8),
         child: Stack(fit: StackFit.expand, children: [
           CachedNetworkImage(
             imageUrl: photo[index].src!.medium,
@@ -143,7 +200,7 @@ Widget photoWidget(
                   strokeWidth: 1,
                 )),
             errorWidget: (context, url, error) => const Icon(Icons.error),
-            fit: BoxFit.fill,
+            fit: BoxFit.cover,
           ),
         ]),
       ));
@@ -167,18 +224,21 @@ Widget categorySliderList(
           )),
       itemBuilder: ((context, index) => InkWell(
           onTap: () => navigateTo(
-              context: context, newScreen: WallpapersViewScreen(title: categoryListLabel[index],)),
+              context: context,
+              newScreen: WallpapersViewScreen(
+                title: categoryListLabel[index],
+              )),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: Stack(children: [
               CachedNetworkImage(
                   imageUrl: categoryList[index],
-                  placeholder: (context, url) => const Center(
+                  /*  placeholder: (context, url) => const Center(
                       widthFactor: 10,
                       heightFactor: 10,
                       child: CircularProgressIndicator(
                         strokeWidth: 1,
-                      )),
+                      )), */
                   errorWidget: (context, url, error) => const Icon(Icons.error),
                   width: imgWidth,
                   height: imgHight,
@@ -208,6 +268,7 @@ Widget categorySliderList(
 
 Widget setWallSliderList(
     //Slider Fun
+
     {List<WallpaperModel>? list,
     double? imgWidth,
     double? imgHight,
@@ -286,11 +347,35 @@ List<BottomNavigationBarItem> listOfNav = [
 
 List<Widget> screens = [
   const HomeScreen(),
-  const SetWallScreen(),
+  SetWallScreen(
+    picUrl: '',
+  ),
   const FavScreen(),
 ];
 
 navigateTo({required Widget newScreen, required BuildContext context}) {
   Navigator.of(context)
       .push(MaterialPageRoute(builder: (context) => newScreen));
+}
+
+Widget loadingShimmer() => Shimmer.fromColors(
+      baseColor: Colors.grey,
+      enabled: Provider_St().isLoadingShimmer,
+      highlightColor: Colors.grey[400]!,
+      period: const Duration(seconds: 3),
+      child: Container(
+          //decoration: BoxDecoration(border: Border.all()),
+          child: const SizedBox(
+        height: double.infinity,
+        width: double.infinity,
+      )),
+    );
+
+showToast(String x) {
+  Fluttertoast.showToast(
+      msg: x,
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.CENTER,
+      backgroundColor: Colors.black45,
+      textColor: Colors.white);
 }

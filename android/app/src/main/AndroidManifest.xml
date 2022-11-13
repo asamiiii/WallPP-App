@@ -1,6 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.wallpaperapp">
-   <application
+
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    
+    <application
         android:label="wallpaperapp"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
