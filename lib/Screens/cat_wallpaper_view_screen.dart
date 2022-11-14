@@ -1,13 +1,10 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wallpaperapp/Screens/home_screen.dart';
-import 'package:wallpaperapp/Screens/set_wall_screen.dart';
 import 'package:wallpaperapp/views/widgets.dart';
 import '../app_provider/provider.dart';
 import '../views/fixed_data.dart';
-import '../wallpaper-model/wallpaper_model.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+
 
 class WallpapersViewScreen extends StatelessWidget {
   final String title;
@@ -31,7 +28,14 @@ class WallpapersViewScreen extends StatelessWidget {
     }
     return Scaffold(
       appBar: categoryScreensAppBar(title),
-      body: GridView.builder(
+      body: StaggeredGridView.countBuilder(
+        crossAxisCount: 3,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+        staggeredTileBuilder: (index) {
+                return StaggeredTile.count(1, index.isEven ? 1.5 : 1.8);
+              },
+        
         itemCount: title == catListText[0]
             ? myProvider.islamicCatPic.length
             : title == catListText[1]
@@ -53,13 +57,7 @@ class WallpapersViewScreen extends StatelessWidget {
                   context: context,
                   ));
         },
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          crossAxisSpacing: 5,
-          mainAxisSpacing: 5,
-          childAspectRatio: MediaQuery.of(context).size.width /
-              (MediaQuery.of(context).size.height / 1.25),
-        ),
+
       ),
     );
   }
