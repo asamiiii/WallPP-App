@@ -1,26 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wallpaperapp/Screens/home_screen.dart';
+import 'package:wallpaperapp/Screens/search_screen.dart';
 import 'package:wallpaperapp/local/cashe_helper.dart';
 import 'app_provider/provider.dart';
 import 'views/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await CasheHelper.init();
   runApp(const MyApp());
+  MaterialApp(
+    initialRoute: Home.routeName,
+    routes: {
+      SearchScreen.routName:(_) =>  SearchScreen(),
+      Home.routeName:(context) =>  Home()
+    },
+  );
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  // This widget is the root of your application
 
   @override
   Widget build(BuildContext context) {

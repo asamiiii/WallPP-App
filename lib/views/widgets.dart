@@ -1,19 +1,72 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter_shimmer/flutter_shimmer.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:wallpaperapp/Screens/cat_wallpaper_view_screen.dart';
 import 'package:wallpaperapp/Screens/fav_screen.dart';
 import 'package:wallpaperapp/Screens/home_screen.dart';
+import 'package:wallpaperapp/Screens/search_screen.dart';
 import 'package:wallpaperapp/Screens/set_wall_screen.dart';
-import 'package:wallpaperapp/views/fixed_data.dart';
 import 'package:wallpaperapp/wallpaper-model/wallpaper_model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
 import '../app_provider/provider.dart';
 
-PreferredSizeWidget appBar() {
+class HomeAppBar extends StatelessWidget {
+  const HomeAppBar({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      toolbarHeight: 80,
+      flexibleSpace: Container(
+        padding: const EdgeInsets.fromLTRB(25, 30, 0, 0),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          const Text(
+            'Get Premium ',
+            style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: Colors.greenAccent),
+          ),
+          const SizedBox(
+            height: 5,
+          ),
+          brandName(),
+        ]),
+      ),
+      actions: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () {
+              Navigator.pushNamed(context, SearchScreen.routName);
+            },
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {},
+          ),
+        )
+      ],
+      elevation: 0,
+    );
+  }
+
+  PreferredSizeWidget categoryScreensAppBar(String catTitle) {
+    return AppBar(
+      elevation: 0,
+      title: Text(catTitle,
+          style: TextStyle(
+              fontSize: 24, fontWeight: FontWeight.w500, color: Colors.black)),
+    );
+  }
+}
+
+PreferredSizeWidget appBar(BuildContext c) {
   return AppBar(
     toolbarHeight: 80,
     flexibleSpace: Container(
@@ -37,7 +90,9 @@ PreferredSizeWidget appBar() {
         padding: const EdgeInsets.all(8.0),
         child: IconButton(
           icon: const Icon(Icons.search),
-          onPressed: () {},
+          onPressed: () {
+            navigateTo(newScreen: SearchScreen(), context: c);
+          },
         ),
       ),
       Padding(
@@ -97,7 +152,7 @@ class ImageMainSlider extends StatelessWidget {
     //print(myProvider.pic.length);
     return Expanded(
       child: SizedBox(
-          width: 100,
+          width: double.infinity,
           height: 150,
           child: ListView.separated(
             //shrinkWrap: true,
@@ -115,7 +170,12 @@ class ImageMainSlider extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                   child: CachedNetworkImage(
                       imageUrl: myProvider.pic[index].src!.medium,
-                      placeholder: (context, url) => const ProfilePageShimmer(),
+                      placeholder: (context, url) => const Center(
+                          widthFactor: 10,
+                          heightFactor: 10,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 1,
+                          )),
                       errorWidget: (context, url, error) =>
                           const Icon(Icons.error),
                       width: 100,
@@ -380,14 +440,17 @@ showToast(String x) {
       textColor: Colors.white);
 }
 
-
 class CustomGridView extends StatelessWidget {
-  const CustomGridView({ Key? key }) : super(key: key);
+  const CustomGridView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      
-    );
+    return Container();
   }
+}
+
+Widget searchAnimatedImage() {
+  return Expanded(
+    child: Image.asset('assets/images/magnifying-glass.gif',width: 200,height: 200,),
+  );
 }

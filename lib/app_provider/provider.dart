@@ -9,7 +9,7 @@ import '../wallpaper-model/wallpaper_model.dart';
 
 class Provider_St extends ChangeNotifier {
   late List<WallpaperModel> pic = [];
-
+  late List<WallpaperModel> searchList = [];
   late List<WallpaperModel> islamicCatPic = [];
   late List<WallpaperModel> computerCatPic = [];
   late List<WallpaperModel> darkCatPic = [];
@@ -19,6 +19,8 @@ class Provider_St extends ChangeNotifier {
 
   List<String>? favSavedLocalList =
       CasheHelper.getListOfUrl(key: 'favoriteList') ?? [];
+
+  String searchText = '';
 
   // Saving URL to List of string in Shared Pref
   savingUrlToLocalList(String fav) {
@@ -56,13 +58,12 @@ class Provider_St extends ChangeNotifier {
       path,
       albumName: 'WallPP',
     ).then((value) {
-      if(value==true){
+      if (value == true) {
         showToast('تم التحميل ');
       }
     });
 
     notifyListeners();
-    
   }
 
   favButtonToggle(isFavo) {
@@ -71,35 +72,13 @@ class Provider_St extends ChangeNotifier {
     notifyListeners();
   }
 
-  getPicUrlByIndexOfList() {
-    for (var picUrl in favPicList) {
-      favPicList.remove(picUrl);
-      notifyListeners();
-    }
-  }
-
-  isFavSearchIfItemExist(String x, bool isFav) {
-    for (int i = 0; i < favPicList.length; i++) {
-      if (x == favPicList[i]) {
-        isFav = false;
-        favPicList.remove(favPicList[i]);
-        notifyListeners();
-      } else {
-        isFav = true;
-        favPicList.add(favPicList[i]);
-        notifyListeners();
-        return x;
-      }
-    }
-  }
-
   getCuratedPhotos(BuildContext context) async {
     isLoadingShimmer = true;
     isFav = false;
     var url = Uri.parse('https://api.pexels.com/v1/curated?per_page=80');
     var response = await http.get(url, headers: {
       "Authorization":
-          '563492ad6f91700001000001acf6db0cbfbe46c8a45f6df76562cc52',
+          '563492ad6f9170000100000127e5c28bba2a416f872059a5fec453a8',
     });
 
     //print(response.body);
@@ -111,7 +90,6 @@ class Provider_St extends ChangeNotifier {
       // print(element); // dev mode
       // getting data
       WallpaperModel wallpaperModel = WallpaperModel();
-
       wallpaperModel = WallpaperModel.fromMap(element);
       pic.add(wallpaperModel);
       isLoadingShimmer = false;
@@ -122,10 +100,10 @@ class Provider_St extends ChangeNotifier {
   getIslamicPhotos() async {
     //catPic=[];
     var url =
-        Uri.parse('https://api.pexels.com/v1/search?query=islamic&per_page=10');
+        Uri.parse('https://api.pexels.com/v1/search?query=islamic&per_page=80');
     var response = await http.get(url, headers: {
       "Authorization":
-          '563492ad6f91700001000001acf6db0cbfbe46c8a45f6df76562cc52',
+          '563492ad6f9170000100000127e5c28bba2a416f872059a5fec453a8',
     });
 
     //print(response.body);
@@ -144,10 +122,10 @@ class Provider_St extends ChangeNotifier {
   getComputerPhotos() async {
     //catPic=[];
     var url = Uri.parse(
-        'https://api.pexels.com/v1/search?query=Computer&per_page=30');
+        'https://api.pexels.com/v1/search?query=Computer&per_page=80');
     var response = await http.get(url, headers: {
       "Authorization":
-          '563492ad6f91700001000001acf6db0cbfbe46c8a45f6df76562cc52',
+          '563492ad6f9170000100000127e5c28bba2a416f872059a5fec453a8',
     });
 
     //print(response.body);
@@ -166,10 +144,10 @@ class Provider_St extends ChangeNotifier {
   getDarkPhotos() async {
     //catPic=[];
     var url =
-        Uri.parse('https://api.pexels.com/v1/search?query=dark&per_page=10');
+        Uri.parse('https://api.pexels.com/v1/search?query=dark&per_page=80');
     var response = await http.get(url, headers: {
       "Authorization":
-          '563492ad6f91700001000001acf6db0cbfbe46c8a45f6df76562cc52',
+          '563492ad6f9170000100000127e5c28bba2a416f872059a5fec453a8',
     });
 
     //print(response.body);
@@ -185,13 +163,36 @@ class Provider_St extends ChangeNotifier {
     });
   }
 
+  clearSearchText() {
+    searchList.clear();
+    notifyListeners();
+  }
+
+  searchPhoto(String picUrl) async {
+    var url =
+        Uri.parse('https://api.pexels.com/v1/search?query=$picUrl&per_page=30');
+    var response = await http.get(url, headers: {
+      "Authorization":
+          '563492ad6f9170000100000127e5c28bba2a416f872059a5fec453a8',
+    });
+
+    Map<String, dynamic> jsonData = jsonDecode(response.body);
+
+    jsonData["photos"].forEach((element) {
+      WallpaperModel wallpaperModel = WallpaperModel();
+      wallpaperModel = WallpaperModel.fromMap(element);
+      searchList.add(wallpaperModel);
+      notifyListeners();
+    });
+  }
+
   getSunsetPhotos() async {
     //catPic=[];
     var url =
-        Uri.parse('https://api.pexels.com/v1/search?query=sunset&per_page=10');
+        Uri.parse('https://api.pexels.com/v1/search?query=sunset&per_page=80');
     var response = await http.get(url, headers: {
       "Authorization":
-          '563492ad6f91700001000001acf6db0cbfbe46c8a45f6df76562cc52',
+          '563492ad6f9170000100000127e5c28bba2a416f872059a5fec453a8',
     });
 
     //print(response.body);
@@ -205,13 +206,6 @@ class Provider_St extends ChangeNotifier {
       notifyListeners();
       print(sunsetCatPic.length);
     });
-  }
-
-  int counter = 0;
-
-  addCounter() {
-    counter += 1;
-    notifyListeners();
   }
 }
 
@@ -229,16 +223,10 @@ class PhotoModel extends Provider_St {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['name'] = id;
     data['price'] = src;
     data['category'] = photographer;
     return data;
   }
 }
-  /// Makes `Counter` readable inside the devtools by listing all of its properties
-  /*  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(IntProperty('count', count));
-  */

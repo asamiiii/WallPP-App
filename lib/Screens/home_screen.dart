@@ -1,15 +1,9 @@
-import 'dart:convert';
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wallpaperapp/wallpaper-model/wallpaper_model.dart';
 import '../app_provider/provider.dart';
 import '../views/fixed_data.dart';
 import '../views/widgets.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter_shimmer/flutter_shimmer.dart';
-
-import 'cat_wallpaper_view_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -20,15 +14,13 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
-  void initState() {}
-
-  @override
   Widget build(BuildContext context) {
     final myProvider = Provider.of<Provider_St>(context);
+
     if (myProvider.pic.isEmpty) {
       myProvider.getCuratedPhotos(context);
     }
-
+    //myProvider.clearSearchText();
     myProvider.isFav = false;
 
     return Scaffold(
@@ -45,18 +37,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   categoryHomeText('Popular now'),
                   const SizedBox(height: 10), // Top separator
-                  customSliderList(
-                    context: context,
-                    wallPapers: myProvider.pic,
-                    imgWidth: 100,
-                    imgHight: double.infinity,
-                    listHight: 150,
-                  ),
-
-                  //const ImageMainSlider(),
-
+                  const ImageMainSlider(),
                   const SizedBox(height: 20), // Bottom separator
-
                   categoryHomeText('Categories'),
                   const SizedBox(height: 10), // Top separator
                   categorySliderList(
@@ -69,16 +51,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     //isCategory: true,
                   ),
                   const SizedBox(height: 20), // Bottom separator
-
                   categoryHomeText('Nowest'),
                   const SizedBox(height: 10), // Top separator
-                  customSliderList(
-                    context: context,
-                    wallPapers: myProvider.pic,
-                    imgWidth: 100,
-                    imgHight: double.infinity,
-                    listHight: 150,
-                  ),
+                  const ImageMainSlider(),
                 ],
               ),
             ),
