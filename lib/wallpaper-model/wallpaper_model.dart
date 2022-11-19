@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 
 class WallpaperModel {
   String? photographer;
@@ -49,6 +48,53 @@ class SrcModel {
       original: jsonData["original"],
       medium: jsonData["medium"],
       tiny: jsonData["tiny"]
+    );
+  }
+}
+
+
+
+
+
+class WallpaperModelFromUnsplash {
+
+  UnsplashUrl? url;
+
+  // create name parameter
+  WallpaperModelFromUnsplash
+  ({
+    this.url,
+  });
+
+  // passing json value from API
+  factory WallpaperModelFromUnsplash.fromMap(Map<String, dynamic> jsonData) {
+    return WallpaperModelFromUnsplash(
+      url: UnsplashUrl.fromMap(jsonData['urls']),
+
+    );
+  }
+}
+
+class UnsplashUrl {
+  String full;
+  String regular;
+  String small;
+
+
+  // create name parameter
+  UnsplashUrl(
+      {required this.full,
+      required this.regular,
+      required this.small,
+      });
+
+  // passing json value from API
+  factory UnsplashUrl.fromMap(Map<String, dynamic> jsonData) {
+    return UnsplashUrl(
+      full : jsonData["full"],
+      regular: jsonData["regular"],
+      small: jsonData["small"]
+
     );
   }
 }

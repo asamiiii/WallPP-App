@@ -8,19 +8,21 @@ import '../views/widgets.dart';
 import '../wallpaper-model/wallpaper_model.dart';
 
 class Provider_St extends ChangeNotifier {
+  String apiKey = '563492ad6f91700001000001acf6db0cbfbe46c8a45f6df76562cc52';
   late List<WallpaperModel> pic = [];
+  late List<WallpaperModelFromUnsplash> unsplashPic = [];
   late List<WallpaperModel> searchList = [];
   late List<WallpaperModel> islamicCatPic = [];
   late List<WallpaperModel> computerCatPic = [];
   late List<WallpaperModel> darkCatPic = [];
   late List<WallpaperModel> sunsetCatPic = [];
+  TextEditingController searchController = TextEditingController();
 
+ bool isDownladed = false;
   List<String> favPicList = [];
 
   List<String>? favSavedLocalList =
       CasheHelper.getListOfUrl(key: 'favoriteList') ?? [];
-
-  String searchText = '';
 
   // Saving URL to List of string in Shared Pref
   savingUrlToLocalList(String fav) {
@@ -72,14 +74,17 @@ class Provider_St extends ChangeNotifier {
     notifyListeners();
   }
 
+  downloadButtonToggle() {
+    isDownladed = !isDownladed;
+    print(isDownladed);
+    notifyListeners();
+  }
+
   getCuratedPhotos(BuildContext context) async {
     isLoadingShimmer = true;
     isFav = false;
     var url = Uri.parse('https://api.pexels.com/v1/curated?per_page=80');
-    var response = await http.get(url, headers: {
-      "Authorization":
-          '563492ad6f9170000100000127e5c28bba2a416f872059a5fec453a8',
-    });
+    var response = await http.get(url, headers: {"Authorization": apiKey});
 
     //print(response.body);
 
@@ -97,14 +102,35 @@ class Provider_St extends ChangeNotifier {
     });
   }
 
+  /* getRandomPhotosUnsplash(BuildContext context) async {
+    isLoadingShimmer = true;
+    isFav = false;
+    var url = Uri.parse('https://api.unsplash.com/photos/?client_id=DRKbXRI9Gz8T5e7UmLCjN4-4lOgT6TRRiyrPcKZCy-E');
+    var response = await http.get(url, headers: {
+      "Authorization":'S9FzY1iQgoDEB8FkZVBETbMkvZ09Vk6GUvSxCDHAJDo'
+    });
+
+    //print(response.body);
+
+    Map<String, dynamic> jsonData = jsonDecode(response.body);
+
+    //parsing data
+    jsonData["random"].forEach((element) {
+      print('----->$element'); // dev mode
+      // getting data
+      WallpaperModelFromUnsplash unsplashWallpaper = WallpaperModelFromUnsplash();
+      unsplashWallpaper = WallpaperModelFromUnsplash.fromMap(element);
+      unsplashPic.add(unsplashWallpaper);
+      isLoadingShimmer = false;
+      notifyListeners();
+    });
+  }
+ */
   getIslamicPhotos() async {
     //catPic=[];
     var url =
         Uri.parse('https://api.pexels.com/v1/search?query=islamic&per_page=80');
-    var response = await http.get(url, headers: {
-      "Authorization":
-          '563492ad6f9170000100000127e5c28bba2a416f872059a5fec453a8',
-    });
+    var response = await http.get(url, headers: {"Authorization": apiKey});
 
     //print(response.body);
 
@@ -123,10 +149,7 @@ class Provider_St extends ChangeNotifier {
     //catPic=[];
     var url = Uri.parse(
         'https://api.pexels.com/v1/search?query=Computer&per_page=80');
-    var response = await http.get(url, headers: {
-      "Authorization":
-          '563492ad6f9170000100000127e5c28bba2a416f872059a5fec453a8',
-    });
+    var response = await http.get(url, headers: {"Authorization": apiKey});
 
     //print(response.body);
 
@@ -145,10 +168,7 @@ class Provider_St extends ChangeNotifier {
     //catPic=[];
     var url =
         Uri.parse('https://api.pexels.com/v1/search?query=dark&per_page=80');
-    var response = await http.get(url, headers: {
-      "Authorization":
-          '563492ad6f9170000100000127e5c28bba2a416f872059a5fec453a8',
-    });
+    var response = await http.get(url, headers: {"Authorization": apiKey});
 
     //print(response.body);
 
@@ -171,10 +191,7 @@ class Provider_St extends ChangeNotifier {
   searchPhoto(String picUrl) async {
     var url =
         Uri.parse('https://api.pexels.com/v1/search?query=$picUrl&per_page=30');
-    var response = await http.get(url, headers: {
-      "Authorization":
-          '563492ad6f9170000100000127e5c28bba2a416f872059a5fec453a8',
-    });
+    var response = await http.get(url, headers: {"Authorization": apiKey});
 
     Map<String, dynamic> jsonData = jsonDecode(response.body);
 
@@ -190,10 +207,7 @@ class Provider_St extends ChangeNotifier {
     //catPic=[];
     var url =
         Uri.parse('https://api.pexels.com/v1/search?query=sunset&per_page=80');
-    var response = await http.get(url, headers: {
-      "Authorization":
-          '563492ad6f9170000100000127e5c28bba2a416f872059a5fec453a8',
-    });
+    var response = await http.get(url, headers: {"Authorization": apiKey});
 
     //print(response.body);
 

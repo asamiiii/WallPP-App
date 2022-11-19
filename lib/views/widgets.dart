@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:wallpaperapp/Screens/cat_wallpaper_view_screen.dart';
-import 'package:wallpaperapp/Screens/fav_screen.dart';
-import 'package:wallpaperapp/Screens/home_screen.dart';
-import 'package:wallpaperapp/Screens/search_screen.dart';
-import 'package:wallpaperapp/Screens/set_wall_screen.dart';
+import 'package:wallpaperapp/Screens/category_screen/cat_wallpaper_view_screen.dart';
+import 'package:wallpaperapp/Screens/favorite_screen/fav_screen.dart';
+import 'package:wallpaperapp/Screens/home_screen/home_screen.dart';
+import 'package:wallpaperapp/Screens/search_Screen/search_screen.dart';
+import 'package:wallpaperapp/Screens/wallpaper_fullScreen.dart/set_wall_screen.dart';
 import 'package:wallpaperapp/wallpaper-model/wallpaper_model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../app_provider/provider.dart';
@@ -107,14 +107,7 @@ PreferredSizeWidget appBar(BuildContext c) {
   );
 }
 
-PreferredSizeWidget categoryScreensAppBar(String catTitle) {
-  return AppBar(
-    elevation: 0,
-    title: Text(catTitle,
-        style: TextStyle(
-            fontSize: 24, fontWeight: FontWeight.w500, color: Colors.black)),
-  );
-}
+
 
 Widget brandName() {
   return SizedBox(
@@ -128,114 +121,6 @@ Widget brandName() {
   );
 }
 
-Widget categoryHomeText(String mainCatTextInHome) {
-  return SizedBox(
-    child: Text(
-      mainCatTextInHome,
-      style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
-    ),
-  );
-}
-
-//List list1 = Provider_St().url;
-
-class ImageMainSlider extends StatelessWidget {
-  const ImageMainSlider({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final myProvider = Provider.of<Provider_St>(context);
-    //final myProvider = Provider.of<Provider_St>(context);
-    if (myProvider.pic.isEmpty) {
-      myProvider.getCuratedPhotos(context);
-    }
-    //print(myProvider.pic.length);
-    return Expanded(
-      child: SizedBox(
-          width: double.infinity,
-          height: 150,
-          child: ListView.separated(
-            //shrinkWrap: true,
-            separatorBuilder: ((context, index) => const SizedBox(
-                  width: 10,
-                )),
-            itemBuilder: ((context, index) => InkWell(
-                onTap: (() {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => SetWallScreen(
-                        picUrl: myProvider.pic[index].src!.original),
-                  ));
-                }),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: CachedNetworkImage(
-                      imageUrl: myProvider.pic[index].src!.medium,
-                      placeholder: (context, url) => const Center(
-                          widthFactor: 10,
-                          heightFactor: 10,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 1,
-                          )),
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
-                      width: 100,
-                      height: double.infinity,
-                      fit: BoxFit.cover),
-                ))),
-            itemCount: myProvider.pic.length,
-            scrollDirection: Axis.horizontal,
-          )),
-    );
-  }
-}
-
-Widget customSliderList(
-    //Slider Fun
-    {required List<WallpaperModel> wallPapers,
-    required BuildContext context,
-    double? imgWidth,
-    double? imgHight,
-    double? listHight}) {
-  final myProvider = Provider.of<Provider_St>(context);
-  return Expanded(
-    child: SizedBox(
-        width: double.infinity,
-        height: listHight,
-        child: ListView.separated(
-          shrinkWrap: true,
-          separatorBuilder: ((context, index) => const SizedBox(
-                width: 10,
-              )),
-          itemBuilder: ((context, index) => InkWell(
-              onTap: (() {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) =>
-                      SetWallScreen(picUrl: wallPapers[index].src!.original),
-                ));
-              }),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Stack(children: [
-                  CachedNetworkImage(
-                      imageUrl: wallPapers[index].src!.medium,
-                      placeholder: (context, url) => const Center(
-                          widthFactor: 10,
-                          heightFactor: 10,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 1,
-                          )),
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
-                      width: imgWidth,
-                      height: imgHight,
-                      fit: BoxFit.cover),
-                ]),
-              ))),
-          itemCount: wallPapers.length,
-          scrollDirection: Axis.horizontal,
-        )),
-  );
-}
 
 Widget photoWidget(
     {required List<WallpaperModel> photo,
@@ -407,8 +292,7 @@ List<BottomNavigationBarItem> listOfNav = [
 
 List<Widget> screens = [
   const HomeScreen(),
-  SetWallScreen(
-    picUrl: '',
+  const FavScreen(
   ),
   const FavScreen(),
 ];
@@ -449,8 +333,4 @@ class CustomGridView extends StatelessWidget {
   }
 }
 
-Widget searchAnimatedImage() {
-  return Expanded(
-    child: Image.asset('assets/images/magnifying-glass.gif',width: 200,height: 200,),
-  );
-}
+
