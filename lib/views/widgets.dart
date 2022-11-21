@@ -125,12 +125,14 @@ Widget brandName() {
 Widget photoWidget(
     {required List<WallpaperModel> photo,
     required int index,
-    required BuildContext context}) {
+    required BuildContext context
+    }) {
+      final myProvider = Provider.of<Provider_St>(context);
   return InkWell(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) =>
-              SetWallScreen(picUrl: photo[index].src!.original),
+              SetWallScreen(picUrl: photo[index].src!.portrait,photographer: photo[index].photographer!),
         ));
       },
       child: ClipRRect(
