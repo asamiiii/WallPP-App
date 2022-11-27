@@ -1,8 +1,5 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wallpaperapp/Screens/home_screen/home_screen.dart';
-import 'package:wallpaperapp/Screens/search_Screen/search_screen.dart';
 import 'package:wallpaperapp/views/widgets.dart';
 
 import '../app_provider/provider.dart';

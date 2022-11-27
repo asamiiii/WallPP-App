@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wallpaperapp/Screens/home_screen/home_screen.dart';
 import 'package:wallpaperapp/Screens/search_Screen/search_screen.dart';
 import 'package:wallpaperapp/local/cashe_helper.dart';
 import 'app_provider/provider.dart';
 import 'views/home.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,7 +13,7 @@ void main() async {
   MaterialApp(
     initialRoute: Home.routeName,
     routes: {
-      SearchScreen.routName:(_) =>  SearchScreen(),
+      SearchScreen.routName:(_) =>  const SearchScreen(),
       Home.routeName:(context) =>  Home()
     },
   );
